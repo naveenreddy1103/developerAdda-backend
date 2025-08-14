@@ -679,7 +679,7 @@ module.exports={validation}
        EX:- const bcrypt=require('bcrypt');
 
        app.post('/signup',async(req,res)=>{
-        const hashedPassword=await bcrypt("password",10);
+        const hashedPassword=await bcrypt.hash("password",10);
         // save password in database
        })
 
