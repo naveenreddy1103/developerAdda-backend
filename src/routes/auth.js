@@ -3,7 +3,7 @@ const authRouter=express.Router()
 const bcrypt=require('bcrypt')
 const User=require('../models/user')
 const {validation}=require('../utils/validation')
-const req = require('express/lib/request')
+
 
 authRouter.post('/signup',async(req,res)=>{
     const {firstName,lastName,emailId,password}=req.body;

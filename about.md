@@ -1138,7 +1138,93 @@ profileRouter.patch('/profile/password',async(req,res)=>{
 #                11. Logical DB Query and compound indexes
 
 ## create connection request schema 
+
+const mongoose=require("mongoose")
+
+const createConnectionSchema=new mongoose.Schema({
+    fromUserId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    toUserId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    status:{
+        type:String,
+        required:true,
+        enum:{
+            values:["interested","ignored"],
+            message:`{VALUE} incorrect status type`
+        }
+    }
+},{timestamps:true})
+
+- mongoose method pre is a hook (or pre middleware) is a function you define on a schema
+that runs before a certian action happens
+
+schema.pre(<action>, function(next) {
+    // your logic here
+    next(); // call next() to continue
+});
+
+<action> → the operation name (like "save", "remove", "updateOne", "findOneAndUpdate", etc.)
+
+next() → tells Mongoose to move to the next middleware or proceed with the operation
+
+createConnectionSchema.pre("save",function(next){
+   const schema=this;
+   if(schema.fromUserId.equals(schema.toUserId)){
+      throw new Error("yourself you can't send request")
+   }
+   next();
+})
+
+const conncetionSchema=mongoose.model('CreateConnection',createConnectionSchema)
+module.exports=conncetionSchema
+
 ## send connection request API
+
+connectionRouter.post('/request/send/:status/:toUserId',verifyToken,
+    async(req,res)=>{
+        try{
+            const fromUserId=req.user._id
+            const toUserId=req.params.toUserId
+            const status=req.params.status
+
+            
+
+            //verifying to userId is exit in db or not
+            const toUser= await User.findById(toUserId)
+            if(!toUser){
+                throw new Error("toUser not found")
+            }
+   
+            // verifying connection already send or not
+            const verifyConnection=await Connection.findOne({
+                $or:[{fromUserId,toUserId},
+                    {fromUserId:toUserId,toUserId:fromUserId}]})
+
+            if(verifyConnection){
+                throw new Error("already connected")
+            }
+
+            // instance of Connecction Schema
+            
+            const connection=new Connection({
+                 fromUserId:fromUserId,toUserId:toUserId,status:status
+           })
+           await connection.save();
+           res.send({message:`${req.user.firstName} was ${status} to ${toUserId}`})
+        }
+        catch(error){
+            res.status(500).send({
+                message:error.message
+            })
+        }
+    }
+)
+
 ## proper validation for data 
 ## Think all about corner cases[means find unwanted sending data and soon]
 

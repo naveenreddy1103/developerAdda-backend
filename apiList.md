@@ -11,8 +11,8 @@
   - patch /profile/password
 
   ## connectionRequestRouter
-  - post /request/send/interested/:userId
-  - post /request/send/ignored/:userId
+  - post /request/send/:interested or ignored/:touserId
+  
   - post /request/review/accepted/:requestId
   - post /request/review/reject/:requestId
 
@@ -22,4 +22,4 @@
   - get /feed   
 
 
-  status=["intersted","ignored","accepcted","rejected"]
+  status=["interested","ignored","accepcted","rejected"]

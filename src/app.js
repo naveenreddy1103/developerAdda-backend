@@ -11,9 +11,11 @@ app.use(cookie()) // cookie middleware
 
 const authRouter=require('./routes/auth')
 const profileRouter=require('./routes/profile')
+const connectionRouter=require('./routes/connection')
 
 app.use('/',authRouter)
 app.use('/',profileRouter)
+app.use('/',connectionRouter)
 
 
 
