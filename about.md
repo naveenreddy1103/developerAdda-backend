@@ -290,7 +290,7 @@ request Handler parameters:- order
 
 
 
-            6.Database, Schema & models mongoose
+#            6.Database, Schema & models mongoose
 
 config:- it's folder this used configuration data
 src/config/database.js
@@ -324,7 +324,7 @@ dbConnect().then(()=>{
 // always run "listen port" after database connection because 
 // if database problem but running listen port that's why 1st database after port
 
-* create a userSchema & user Model
+## create a userSchema & user Model
  creating Schema and model inside folder models
 
  /src/models/user.js
@@ -353,7 +353,7 @@ const userSchema=new mongoose.Schema({
 
 module.exports=mongoose.model('User',userSchema)
 
-* create Post/ signup API to add data to database
+## create Post/ signup API to add data to database
 
 const express=require('express');
 const app=express();
@@ -385,7 +385,7 @@ dbConnect().then(()=>{
   console.error(error.message)
 })
 
-* push some documents  using api call from databases
+## push some documents  using api call from databases
 localhost:1234/signup
 
 output in database:-
@@ -402,15 +402,15 @@ __v:0
    Ex:- _v:1
 
 
-* Error Handling using try and catch
+## Error Handling using try and catch
 try{success}catch(error){console.error(err.message)}
 
 
 
 
-                7. diving into API's
+#                7. diving into API's
 
-* difference between JSON and JavaScript object
+## difference between JSON and JavaScript object
 Json :- text based format, used for data exchange, "key" must be double
         it supports only string, number, boolean, null, array, object only
         comments are not allowed          
@@ -437,10 +437,10 @@ js object:- Native in js, used for logic , no need to put double quote key
         JSON string → JS Object	JSON.parse(jsonString)
         JavaScript Object is specific to JavaScript
 
-* adding express.json() middleware to your app
+## adding express.json() middleware to your app
   app.use(express.json())
 
-* sign Api dynamic to receive data from user end
+## sign Api dynamic to receive data from user end
 app.post('/signup',async(req,res)=>{
     // instance of userSchema for creating new user
     const user=new User(req.body)
@@ -452,7 +452,7 @@ app.post('/signup',async(req,res)=>{
     }
 })
 
-* api get user by email from user end
+## api get user by email from user end
 app.get('/user',async(req,res)=>{
     try{
         const user=await User.find({emailId:req.body.emailId})
@@ -463,7 +463,7 @@ app.get('/user',async(req,res)=>{
     }
 })
 
-* Feed API -get /feed - get all users from the database
+## Feed API -get /feed - get all users from the database
 // feed Api geting all users using find()
 app.get('/feed',async(req,res)=>{
     try{
@@ -475,7 +475,7 @@ app.get('/feed',async(req,res)=>{
     }
 })
 
-* get Api by user id
+## get Api by user id
 app.get('/user',async(req,res)=>{
     const userId=req.body.userId
     try{
@@ -487,7 +487,7 @@ app.get('/user',async(req,res)=>{
     }
 })
 
-* difference between PATCH and PUT
+## difference between PATCH and PUT
 
 | Feature  | PUT                                  | PATCH                               |
 | -------- | ------------------------------------ | ----------------------------------- |
@@ -496,7 +496,7 @@ app.get('/user',async(req,res)=>{
 | Use when | Replacing whole resource             | Making partial edits                |
 
 
-* API update user
+## API update user
 // update user by _id
 app.patch('/user',async(req,res)=>{
     const userId=req.body.userId;
@@ -511,10 +511,10 @@ app.patch('/user',async(req,res)=>{
     }
 })
 
-* explore mongoose document inside model methods
+## explore mongoose document inside model methods
 
 
-* Api update the user with email id
+## Api update the user with email id
 // update user with email
 app.patch('/user',async(req,res)=>{
     const emailId=req.body.emailId;
@@ -529,7 +529,7 @@ app.patch('/user',async(req,res)=>{
     }
 })
 
-* options:-{ returnDocument:"after"}  => return  the document before update in console.
+## options:-{ returnDocument:"after"}  => return  the document before update in console.
                        we are not mention "after". by default is "before".
          {runValidators:ture}  => it enables validation at the time of upadate. 
          etc ......
@@ -537,7 +537,7 @@ app.patch('/user',async(req,res)=>{
 
 
 
-          8. Data sanitization & schema validation
+#          8. Data sanitization & schema validation
 
 
 Schema types:-
@@ -568,9 +568,9 @@ Ex:-   const userShema=new mongoose.Schema({
     }
 },{timestamps:true})
 
-* timestamps:- timestamps:true
+## timestamps:- timestamps:true
 
-* Add API level validation on patch request and put request
+## Add API level validation on patch request and put request
 app.patch('/user/:userId',async(req,res)=>{
     const userId=req.params.userId;
     const data=req.body
@@ -598,11 +598,11 @@ app.patch('/user/:userId',async(req,res)=>{
     }
 })
 
-* install validator 
+## install validator 
   >npm i validator  //using enbale validation inside Schema and APi's level
 
 
-* Explore validator libary function and use validator funcs for password, email
+## Explore validator libary function and use validator funcs for password, email
      EX:- In Schema level by using mongoose validate function we enable validator
      const validator=require("validator")
      const userShema= new mongoose.Schema({
@@ -636,13 +636,13 @@ app.patch('/user/:userId',async(req,res)=>{
     }
 })
 
-* Never trust request body:- because it allow all data anything we need enbale validation.
+## Never trust request body:- because it allow all data anything we need enbale validation.
 
 
 
-                        9. Encrypting Password
+#                        9. Encrypting Password
 
-* Validate signUp Api by using different file for maintain validation
+## Validate signUp Api by using different file for maintain validation
 - validation we can write different file for reusebility and readbility and maintainbility 
 
      EX:- /src/utils (or) helpers/validation.js
@@ -672,7 +672,7 @@ module.exports={validation}
         })
 
 
-* creating hash password and compare with hashed password by using bcrypt 
+## creating hash password and compare with hashed password by using bcrypt 
 
 > npm i bcrypt
 
@@ -692,9 +692,9 @@ module.exports={validation}
 
 
 
-                        10. Authentication, JWT & cookies
+#                     10. Authentication, JWT & cookies
 
-* install cookie parser
+## install cookie parser
 --> express by default provide method for storing cookie
       syntax:- res.cookie('Name',value)
    // we can set expire for cookie:- res.cookie(name,token,{expires: new Date(Date.now() + 8 * 3600000)})
@@ -706,7 +706,7 @@ module.exports={validation}
      app.use(cookie())
      const value=req.cookies
 
-* json web token:- jsonwebtoken it create unique token for every user. based on user data.
+## json web token:- jsonwebtoken it create unique token for every user. based on user data.
 --> Using token secure user api routes. when login the user we took user id. with we generate token.
 --> we need jsonwebtoken libarary
      > npm i jsonwebtoken
@@ -800,7 +800,7 @@ verifyToken
 
 
 
-* create userSchema  methods to getJWT():-
+## create userSchema  methods to getJWT():-
 
 --> inside login route without creating json web token we directly assigned to "schema methods"
 --> in userSchema every user is instances of userSchema.
@@ -850,7 +850,7 @@ app.post('/login',async(req,res)=>{
 
 
 
-* create userSchema method to comparePassword(passwordUserByInput) using bcrypt
+## create userSchema method to comparePassword(passwordUserByInput) using bcrypt
 
 --> inside login route without comparing bcrypt password we directly assigned to "schema methods"
 --> in userSchema every user is instances of userSchema.
@@ -959,6 +959,188 @@ app.post('/login',async(req,res)=>{
 
 
 
-                        11. Diving into the Api's and express Router 
+##                    11. Diving into the Api's and express Router 
+
+
+## Explore tinder Api's
+## create a list all api's you can think of in dev tender.
+-##group multiple routes under respective routers.
+   src/routes/auth.js
+      authRouter have signIn, logIn, logout...
+
+## read documentation for express.Router()
+   - it also like works in individual routes
+   EX:-
+   const express=require('express')
+   const app=express()
+   app.post('/signIn',async(req,res)=>{})    // indivual
+
+   src/routes/auth.js
+   const express=require('express')
+   const authRouter=express.Router()
+   authRouter.post('/signIn',async(req,res)=>{})    //group routes
+
+## create authRouter, profileRouter, requestRouter
+   src/routes/auth.js     // this are authication routes under router
+   
+   const express=require('express')
+const authRouter=express.Router()
+const bcrypt=require('bcrypt')
+const User=require('../models/user')
+const {validation}=require('../utils/validation')
+
+authRouter.post('/signup',async(req,res)=>{
+    const {firstName,lastName,emailId,password}=req.body;
+    
+    try{
+        // validation
+        validation(req)
+
+        // encrypt
+        const passwordHash=await bcrypt.hash(password,10)
+         
+        // instance of userSchema for creating new user
+        const user=new User({
+            firstName,lastName,emailId,password:passwordHash
+        })
+        await user.save();
+        res.send("user created")
+    }catch(error){
+        res.status(400).send({message:error.message,error:"error in signup"})
+    }
+})
+
+authRouter.post('/login',async(req,res)=>{
+    try{
+        const {emailId,password}=req.body
+        const user=await User.findOne({emailId:emailId})
+        if(!user){
+            throw new Error("Invaild creditionals")
+        }
+        const afterHashedPassword=await user.hashedPassword(password)
+        if(!afterHashedPassword){
+            throw new Error("Invaild creditionals")
+        }
+        const token=await user.getJWT();
+        res.cookie('token',token)
+        res.send({message:"login successfully",userName:user.firstName+" "+user.lastName})
+    }
+    catch(error){
+        res.send({message:error.message}).status(400)
+    }
+})
+
+module.exports=authRouter;
+
+## import these routers is app.js 
+   const authRouter=require('./routes/auth')
+
+   app.use('/',authRouter)
+
+## create post /logout
+    authRouter.post('/logout',async(req,res)=>{
+    try{
+        res.cookie('token',null,{
+            expires:new Date(Date.now())
+        })
+        res.send("logout success")
+    }
+    catch(error){
+        res.send({messsage:error.message,data:"while logout error"}).status(5000)
+    }
+})
+
+## make you validate all data in every post,patch api's
+
+const validateUserEdit=(req)=>{
+   const editFeilds=["gender","age","skills","profile"];
+   const validateFeilds=Object.keys(req.body).every((k)=>editFeilds.includes(k))
+   const {skills,age}=req.body
+  
+   if(!validateFeilds){
+    throw new Error("can't few feilds")
+   }
+   if((skills.length)>5){
+    throw new Error("skills less than five")
+    
+   }
+   if(age>95){
+       throw new Error("age must less than 95")
+   }
+}
+## create patch /profile/edit
+profileRouter.patch('/profile/edit',verifyToken,async(req,res)=>{
+    try{
+        validateUserEdit(req)
+        const requestData=req.body
+        const userData=req.user
+        Object.keys(req.body).map(key=>userData[key]=requestData[key])
+        await userData.save();
+        res.send({message:"good",data:userData})
+        
+    }
+    catch(error){
+        res.send({message:error.message,data:"error in edit profile"})
+    }
+})
+
+## create patch /profile/password    //forgot password
+ - Router 
+// password forgot by using mail, first Name and lastName 
+profileRouter.patch('/profile/password',async(req,res)=>{
+    try{
+        forgotPasswordValidation(req)
+        const {email,firstName,lastName,password}=req.body
+        const user=await User.findOne({emailId:email})
+        const hashedPassword=await bcrypt.hash(password,10)
+        if(!user || (!user.firstName==firstName) || (!user.lastName==lastName) ){
+            throw new Error("data is incorrect")
+        }
+        
+        const data={password:hashedPassword}
+        await User.findByIdAndUpdate(user._id,{$set:data})
+        res.send({message:`${user.firstName} updated successfully`})
+    }
+    catch(error){
+        res.send({message:error.message,data:"error forgot in password"})
+    }
+})
+
+  - validation
+  const forgotPasswordValidation=(req)=>{
+  const requestData=req.body
+  const validateDate=["email","firstName","lastName","password"]
+  const afterValidation=Object.keys(requestData).every((key)=>validateDate.includes(key))
+  if(!requestData.email){
+    throw new Error("email required")
+  }
+  if(!validator.isEmail(requestData.email)){
+    throw new Error("check email")
+  }
+  if(!requestData.firstName){
+    throw new Error("firstName required")
+  }
+  if(!requestData.lastName){
+    throw new Error("lastName required")
+  }
+   if(!requestData.password){
+    throw new Error("Password required")
+  }
+  if(!validator.isStrongPassword(requestData.password)){
+    throw new Error("check Password")
+  }
+  if(!afterValidation){
+    throw new Error("feilds not found")
+  }
+}
+
+
+#                11. Logical DB Query and compound indexes
+
+## create connection request schema 
+## send connection request API
+## proper validation for data 
+## Think all about corner cases[means find unwanted sending data and soon]
+
 
 

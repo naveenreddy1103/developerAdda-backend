@@ -3,6 +3,7 @@ const authRouter=express.Router()
 const bcrypt=require('bcrypt')
 const User=require('../models/user')
 const {validation}=require('../utils/validation')
+const req = require('express/lib/request')
 
 authRouter.post('/signup',async(req,res)=>{
     const {firstName,lastName,emailId,password}=req.body;
@@ -42,6 +43,18 @@ authRouter.post('/login',async(req,res)=>{
     }
     catch(error){
         res.send({message:error.message}).status(400)
+    }
+})
+
+authRouter.post('/logout',async(req,res)=>{
+    try{
+        res.cookie('token',null,{
+            expires:new Date(Date.now())
+        })
+        res.send("logout success")
+    }
+    catch(error){
+        res.send({messsage:error.message,data:"while logout error"}).status(5000)
     }
 })
 

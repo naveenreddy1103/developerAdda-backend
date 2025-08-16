@@ -19,4 +19,48 @@ const validation=(req)=>{
 
 }
 
-module.exports={validation}
+const validateUserEdit=(req)=>{
+   const editFeilds=["gender","age","skills","profile"];
+   const validateFeilds=Object.keys(req.body).every((k)=>editFeilds.includes(k))
+   const {skills,age}=req.body
+  
+   if(!validateFeilds){
+    throw new Error("can't few feilds")
+   }
+   if((skills.length)>5){
+    throw new Error("skills less than five")
+    
+   }
+   if(age>95){
+       throw new Error("age must less than 95")
+   }
+}
+
+const forgotPasswordValidation=(req)=>{
+  const requestData=req.body
+  const validateDate=["email","firstName","lastName","password"]
+  const afterValidation=Object.keys(requestData).every((key)=>validateDate.includes(key))
+  if(!requestData.email){
+    throw new Error("email required")
+  }
+  if(!validator.isEmail(requestData.email)){
+    throw new Error("check email")
+  }
+  if(!requestData.firstName){
+    throw new Error("firstName required")
+  }
+  if(!requestData.lastName){
+    throw new Error("lastName required")
+  }
+   if(!requestData.password){
+    throw new Error("Password required")
+  }
+  if(!validator.isStrongPassword(requestData.password)){
+    throw new Error("check Password")
+  }
+  if(!afterValidation){
+    throw new Error("feilds not found")
+  }
+}
+
+module.exports={validation,validateUserEdit,forgotPasswordValidation}

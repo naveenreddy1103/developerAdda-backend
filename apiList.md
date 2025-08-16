@@ -20,3 +20,6 @@
   - get /connections
   - get /request/received
   - get /feed   
+
+
+  status=["intersted","ignored","accepcted","rejected"]
