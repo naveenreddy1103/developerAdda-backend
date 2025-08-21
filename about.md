@@ -1227,6 +1227,14 @@ connectionRouter.post('/request/send/:status/:toUserId',verifyToken,
 
 ## proper validation for data 
 ## Think all about corner cases[means find unwanted sending data and soon]
+## indexes are make our query fast if in more data
+
+
+
+#              12. Ref & populate & thought process of writing API's
+
+## write a code with proper validation POST //request/review/:accepted or rejected/:requestId
+
 
 
 

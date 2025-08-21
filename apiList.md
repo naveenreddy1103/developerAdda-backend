@@ -13,8 +13,7 @@
   ## connectionRequestRouter
   - post /request/send/:interested or ignored/:touserId
   
-  - post /request/review/accepted/:requestId
-  - post /request/review/reject/:requestId
+  - post /request/review/:accepted or rejected/:requestId
 
   ## userRouters
   - get /connections
@@ -22,4 +21,4 @@
   - get /feed   
 
 
-  status=["interested","ignored","accepcted","rejected"]
+  status=["interested","ignored","accepted","rejected"]

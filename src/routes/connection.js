@@ -46,4 +46,40 @@ connectionRouter.post('/request/send/:status/:toUserId',verifyToken,
     }
 )
 
+connectionRouter.post('/request/review/:status/:requestId',verifyToken,
+    async(req,res)=>{
+        try{
+            const {requestId,status}=req.params
+            const loginUser=req.user
+        const vaildValue=["accepted","rejected"]
+        const statusValidate=vaildValue.includes(status)
+        if(!statusValidate){
+            throw new Error("invaild status")
+        }
+        const connectionData=await Connection.findOne({
+            _id:requestId,
+            toUserId:loginUser._id,
+            status:"interested"
+        })
+
+        if(!connectionData){
+            throw new Error("Connection not found")
+        }
+       
+        connectionData.status=status
+        await connectionData.save();
+
+        res.json({
+            message:status +"success"
+        })
+
+        }
+        catch(error){
+            res.status(400).json({
+                message:error.message
+            })
+        }
+    }
+)
+
 module.exports=connectionRouter
