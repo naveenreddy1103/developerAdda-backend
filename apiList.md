@@ -16,8 +16,8 @@
   - post /request/review/:accepted or rejected/:requestId
 
   ## userRouters
+   - get /user/request/received
   - get /connections
-  - get /request/received
   - get /feed   
 
 

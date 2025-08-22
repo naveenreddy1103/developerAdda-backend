@@ -1234,7 +1234,117 @@ connectionRouter.post('/request/send/:status/:toUserId',verifyToken,
 #              12. Ref & populate & thought process of writing API's
 
 ## write a code with proper validation POST //request/review/:accepted or rejected/:requestId
+connectionRouter.post('/request/review/:status/:requestId',verifyToken,
+    async(req,res)=>{
+        try{
+            const {requestId,status}=req.params
+            const loginUser=req.user
+        const vaildValue=["accepted","rejected"]
+        const statusValidate=vaildValue.includes(status)
+        if(!statusValidate){
+            throw new Error("invaild status")
+        }
+        const connectionData=await Connection.findOne({
+            _id:requestId,
+            toUserId:loginUser._id,
+            status:"interested"
+        })
+
+        if(!connectionData){
+            throw new Error("Connection not found")
+        }
+       
+        connectionData.status=status
+        await connectionData.save();
+
+        res.json({
+            message:status +"success"
+        })
+
+        }
+        catch(error){
+            res.status(400).json({
+                message:error.message
+            })
+        }
+    }
+)
+
+## Thought process Post vs GET
+
+   - POSt:- while posting data we need verify every feilds from user because may send unwanted 
+            we can't in database without verifying
+   - get:- while getting data we can't show entire what required from we show that data only
+     ................
+
+## read about ref and populate
+## create get  /user/request/received with all the checks 
+
+const express=require('express')
+const userRouter =express.Router()
+const {verifyToken}=require('../middleware/auth')
+const Connection=require('../models/connectionRequest')
 
 
+// getting all pending connections
+userRouter.get('/user/request/received',verifyToken,async(req,res)=>{
+     try{
+        const user=req.user;
+        const connectionDb=await Connection.find({
+            toUserId:user._id,
+            status:"interested"
+        }).populate("fromUserId","firstName lastName gender age skills profile")
+        res.json({
+            message:connectionDb
+        })
+     }
+     catch(error){
+        res.status(400).json({
+            message:error.message
+        })
+     }
+})
+
+module.exports=userRouter
+
+
+## create get get/user/connections
+-  all accepted connections based login user
+
+userRouter.get('/user/connections',verifyToken,async(req,res)=>{
+    try{
+        const user=req.user
+        const connections=await Connection.find({
+            $or:[{status:"accepted",fromUserId:user._id}
+                ,{status:"accepted",toUserId:user._id}]
+        }).populate("fromUserId",requiredUserData)
+        .populate("toUserId",requiredUserData)
+        const data=connections.map(row=>{
+            if(user._id.toString()!==row.fromUserId._id.toString()){
+                return row.fromUserId
+            }
+            else if(user._id.toString()!==row.toUserId._id.toString()){
+                return row.toUserId
+            }
+            else{
+                return "Not avaible"
+            } 
+                //[or]
+            // if(user._id.toString()===row.fromUserId._id.toString()){
+            //     return row.toUserId;
+            // }
+            // return row.fromUserId
+        })
+        res.json({
+            message:data
+        })
+    }
+    
+    catch(error){
+        res.status(400).json({
+            message:error.message
+        })
+    }
+})
 
 
