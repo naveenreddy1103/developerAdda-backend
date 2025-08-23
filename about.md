@@ -1348,3 +1348,22 @@ userRouter.get('/user/connections',verifyToken,async(req,res)=>{
 })
 
 
+## logic for feed api
+## explore  the $nin[not in in], $and,  $ne and other operators
+
+## pagination
+
+- /feed?page=1&limit=10 => 1-10 => .skip(0) & .limit(10)
+- /feed?page=2&limit=10 => 21-10 => .skip(10) & .limit(10)
+- /feed?page=3 &  limit=10 =>31-10 => .skip(10)& .limit(10)
+
+- .skip() and .limit() methods 
+        skip:- will skip number of record
+        limit:- will set number of records reterive
+
+formula => skip=(page-1)*limit
+validation => limit=limit>50 ? 50:limit
+
+..............
+
+
