@@ -6,7 +6,10 @@ const {validation}=require('../utils/validation')
 
 
 authRouter.post('/signup',async(req,res)=>{
-    const {firstName,lastName,emailId,password}=req.body;
+    const {
+        firstName,lastName,emailId,password,
+        about,gender,age,skills,profile
+    }=req.body;
     
     try{
         // validation
@@ -39,10 +42,15 @@ authRouter.post('/login',async(req,res)=>{
         }
         const token=await user.getJWT();
         res.cookie('token',token)
-        res.send({message:"login successfully",userName:user.firstName+" "+user.lastName})
+        res.json({message:"login successfully",firstName:user.firstName,
+            lastName:user.lastName,
+            profile:user.profile,
+            token:token
+        })
     }
     catch(error){
-        res.send({message:error.message}).status(400)
+        res.status(400).json({message:error.message
+        })
     }
 })
 
@@ -54,7 +62,7 @@ authRouter.post('/logout',async(req,res)=>{
         res.send("logout success")
     }
     catch(error){
-        res.send({messsage:error.message,data:"while logout error"}).status(5000)
+        res.send({messsage:error.message,data:"while logout error"}).status(500)
     }
 })
 

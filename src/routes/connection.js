@@ -36,7 +36,7 @@ connectionRouter.post('/request/send/:status/:toUserId',verifyToken,
                  fromUserId:fromUserId,toUserId:toUserId,status:status
            })
            await connection.save();
-           res.send({message:`${req.user.firstName} was ${status} to ${toUser.firstName}`})
+           res.send({message:`${req.user.firstName} was ${status} on ${toUser.firstName}`})
         }
         catch(error){
             res.status(500).send({

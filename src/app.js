@@ -2,11 +2,16 @@
 const express=require('express');
 const app=express();
 const dbConnect=require('./config/database')
+const cors=require('cors')
 
 const cookie=require('cookie-parser')
 
 app.use(express.json()) // json middleware
 app.use(cookie()) // cookie middleware
+app.use(cors({
+  origin:"http://localhost:5173",
+  credentials:true
+}))
 
 
 const authRouter=require('./routes/auth')

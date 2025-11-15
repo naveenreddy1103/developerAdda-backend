@@ -8,8 +8,14 @@ const bcrypt=require('bcrypt')
 profileRouter.get('/profile/view',verifyToken,async(req,res)=>{
     try{
         const data=req.user;
-        const userName=data.firstName+" "+data.lastName
-        res.send(userName)
+        // const userName=data.firstName+" "+data.lastName
+        res.json({
+            firstName:data.firstName,
+            lastName:data.lastName,
+            profile:data.profile,
+            skills:data.skills,
+            emailId:data.emailId
+        })
     }
     catch(error){
         res.send({message:error.message}).status(400)
@@ -23,11 +29,12 @@ profileRouter.patch('/profile/edit',verifyToken,async(req,res)=>{
         const userData=req.user
         Object.keys(req.body).map(key=>userData[key]=requestData[key])
         await userData.save();
-        res.send({message:"good",data:userData})
+        res.status(200).send({message:"Proile updated successfully",data:userData})
         
     }
     catch(error){
-        res.send({message:error.message,data:"error in edit profile"})
+        // const status = error.message.includes("field") || error.message.includes("age") ? 400 : 500
+        res.status(500).send({message:error.message,data:"error in edit profile"})
     }
 });
 
@@ -44,10 +51,10 @@ profileRouter.patch('/profile/password',async(req,res)=>{
         
         const data={password:hashedPassword}
         await User.findByIdAndUpdate(user._id,{$set:data})
-        res.send({message:`${user.firstName} updated successfully`})
+        res.status(200).send({message:`${user.firstName} updated successfully`})
     }
     catch(error){
-        res.send({message:error.message,data:"error forgot in password"})
+        res.status(500).send({message:error.message,data:"error forgot in password"})
     }
 })
 

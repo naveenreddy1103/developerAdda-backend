@@ -19,22 +19,25 @@ const validation=(req)=>{
 
 }
 
-const validateUserEdit=(req)=>{
-   const editFeilds=["gender","age","skills","profile"];
-   const validateFeilds=Object.keys(req.body).every((k)=>editFeilds.includes(k))
-   const {skills,age}=req.body
-  
-   if(!validateFeilds){
-    throw new Error("can't few feilds")
-   }
-   if((skills.length)>5){
-    throw new Error("skills less than five")
-    
-   }
-   if(age>95){
-       throw new Error("age must less than 95")
-   }
-}
+const validateUserEdit = (req) => {
+  const editFeilds = ["gender", "age", "skills", "profile", "firstName", "lastName", "about"];
+  const validateFeilds = Object.keys(req.body).every((k) => editFeilds.includes(k));
+
+  const { skills, age } = req.body;
+
+  if (!validateFeilds) {
+    throw new Error("Can't edit disallowed fields");
+  }
+
+  if (skills && skills.length > 5) {
+    throw new Error("Skills must be less than five");
+  }
+
+  if (age > 95) {
+    throw new Error("Age must be less than 95");
+  }
+};
+
 
 const forgotPasswordValidation=(req)=>{
   const requestData=req.body
